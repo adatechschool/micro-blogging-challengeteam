@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Connexion</title>
+    <link rel="stylesheet" th:href="@{/css/connexion.css}" />
+</head>
+<body>
+<div class="container">
+    <div class="form-side">
+        <h1>Hello, friend!</h1>
+        <form th:action="@{/connexion}" method="post" th:object="${user}">
+            <div class="input-group">
+                <input type="email" th:field="*{email}" placeholder="E-mail" required />
+            </div>
+            <div class="input-group">
+                <input type="password" th:field="*{password}" placeholder="Mot de passe" required />
+            </div>
+            <button type="submit" class="submit-btn">SE CONNECTER</button>
+        </form>
+        <p class="signup-link">Pas encore inscrit ? <a th:href="@{/signup}">Créer un compte</a></p>
+    </div>
+    <div class="welcome-side">
+        <h2>ChallengeTalk</h2>
+        <h3>Bienvenue !</h3>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dignissim.</p>
+    </div>
+</div>
+</body>
+</html>

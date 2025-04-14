@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Inscription | ChallengeTalk</title>
+  <link rel="stylesheet" href="/css/inscription.css">
+</head>
+<body>
+<div class="container">
+  <div class="form-section">
+    <h2>Hello, friend!</h2>
+    <form th:action="@{/signup}" method="post" th:object="${user}">
+      <div class="input-group">
+        <input type="text" placeholder="Nom complet" th:field="*{fullname}" required>
+      </div>
+      <div class="input-group">
+        <input type="email" placeholder="E-mail" th:field="*{email}" required>
+      </div>
+      <div class="input-group">
+        <input type="text" placeholder="Nom d'utilisateur" th:field="*{username}" required>
+      </div>
+      <div class="input-group">
+        <input type="date" placeholder="Date de naissance" th:field="*{dob}" required>
+      </div>
+      <div class="input-group">
+        <input type="text" placeholder="Genre" th:field="*{gender}" required>
+      </div>
+      <div class="input-group">
+        <input type="text" placeholder="Biographie" th:field="*{bio}" required>
+      </div>
+      <div class="input-group checkbox">
+        <input type="checkbox" required>
+        <label>J’accepte les <a href="#">Conditions Générales</a></label>
+      </div>
+      <button type="submit" class="btn">CREATE ACCOUNT</button>
+    </form>
+    <p class="bottom-text">Déjà inscrit ? <a th:href="@{/connexion}">Connexion</a></p>
+  </div>
+  <div class="visual-section">
+    <h1>ChallengeTalk</h1>
+    <h2>Glad to see you!</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam dignissim.</p>
+  </div>
+</div>
+</body>
+</html>
