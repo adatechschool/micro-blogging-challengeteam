@@ -4,6 +4,7 @@ import com.microblog.app.repositories.UserRepository;
 import com.microblog.app.models.User;
 import com.microblog.app.repositories.PostRepository;
 import com.microblog.app.models.Post;
+import com.microblog.app.utils.HashtagUtil;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -33,9 +34,19 @@ public class ProfileController {
     }
 
     @GetMapping("/profile/{user_id}")
-    public String profile(@PathVariable Long user_id, Model model) {
-        User user = userRepository.findById(user_id).orElseThrow(() -> new RuntimeException("User not found!"));
+    public String showProfile(@PathVariable("user_id") Long user_id, Model model) {
+        User user = userRepository.findById(user_id)
+                .orElseThrow(() -> new RuntimeException("User not found!"));
+
         List<Post> posts = postRepository.findByUserOrderByCreatedAtDesc(user);
+
+        // Transform hashtags into links
+        for (Post post : posts) {
+            if (post.getDescription() != null) {
+                post.setDescription(HashtagUtil.linkifyHashtags(post.getDescription()));
+            }
+        }
+
         model.addAttribute("user", user);
         model.addAttribute("posts", posts);
         return "profile";
