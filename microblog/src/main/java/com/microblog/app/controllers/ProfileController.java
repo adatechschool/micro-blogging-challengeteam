@@ -4,14 +4,18 @@ import com.microblog.app.repositories.UserRepository;
 import com.microblog.app.models.User;
 import com.microblog.app.repositories.PostRepository;
 import com.microblog.app.models.Post;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.*;
+import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 import java.sql.Timestamp;
@@ -60,5 +64,62 @@ public class ProfileController {
         post.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         postRepository.save(post);
         return "redirect:/profile/" + post.getUser().getId();
+    }
+
+    @PostMapping("/posts/delete/{id}")
+    public String deletePost(@PathVariable Long id, Principal principal, RedirectAttributes redirectAttributes) {
+        Post post = postRepository.findById(id).orElseThrow();
+
+        /*if (!post.getUser().getUsername().equals(principal.getName())) {
+            redirectAttributes.addFlashAttribute("error", "You’re not allowed to delete this post.");
+            return "redirect:/profile/" + post.getUser().getId();
+        }*/
+
+        postRepository.delete(post);
+        redirectAttributes.addFlashAttribute("success", "Post deleted successfully.");
+        return "redirect:/profile/" + post.getUser().getId();
+    }
+
+    @GetMapping("/profile/edit")
+    public String showEditForm(@RequestParam("user_id") Long userId, Model model) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        model.addAttribute("user", user);
+        return "edit-profile";
+    }
+
+    @PostMapping("/users/update")
+    public String updateProfile(@ModelAttribute("user") User updatedUser,
+                                @RequestParam("avatarFile") MultipartFile avatarFile) throws IOException {
+
+        User user = userRepository.findById(updatedUser.getId())
+                .orElseThrow(() -> new RuntimeException("User not found!"));
+
+        user.setFullname(updatedUser.getFullname());
+        user.setUsername(updatedUser.getUsername());
+        user.setBio(updatedUser.getBio());
+        user.setDob(updatedUser.getDob());
+
+        // Handle avatar upload
+        if (!avatarFile.isEmpty()) {
+            String filename = UUID.randomUUID() + "_" + avatarFile.getOriginalFilename();
+            String uploadDir = "src/main/resources/static/pfp"; // Save location in project
+            Path uploadPath = Paths.get(uploadDir);
+
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+
+            try (InputStream inputStream = avatarFile.getInputStream()) {
+                Path filePath = uploadPath.resolve(filename);
+                Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
+                user.setAvatar("/pfp/" + filename); // relative path for <img th:src="@{${user.avatar}}">
+            } catch (IOException e) {
+                throw new IOException("Could not save uploaded file: " + filename, e);
+            }
+        }
+
+        userRepository.save(user);
+        return "redirect:/profile/" + user.getId();
     }
 }
