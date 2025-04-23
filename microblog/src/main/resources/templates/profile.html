@@ -61,7 +61,7 @@
 
                 <!-- Post Footer: Date + Delete button -->
                 <div class="d-flex justify-content-between align-items-center">
-                    <small class="text-muted" th:text="${#dates.format(post.createdAt, 'dd MMM yyyy')}">22 Apr 2025</small>
+                    <small class="text-muted" th:text="${#dates.format(post.createdAt, 'dd MMM yyyy HH:mm')}"></small>
 
                     <!-- Delete Form -->
                     <form th:action="@{/posts/delete/{id}(id=${post.id})}" method="post"
@@ -76,7 +76,11 @@
         </div>
     </div>
 
-
+    <a th:href="@{/posts/new(user_id=${user.id})}"
+       class="btn btn-primary rounded-circle shadow-lg"
+       style="position: fixed; bottom: 20px; right: 20px; z-index: 999; width: 56px; height: 56px; display: flex; align-items: center; justify-content: center;">
+        <i class="bi bi-plus-lg"></i>
+    </a>
 
 </div>
 
