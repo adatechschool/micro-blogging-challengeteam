@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/micro-blogging-challengeteam.iml" filepath="$PROJECT_DIR$/.idea/micro-blogging-challengeteam.iml" />
-      <module fileurl="file://$PROJECT_DIR$/microblog/microblog.iml" filepath="$PROJECT_DIR$/microblog/microblog.iml" />
     </modules>
   </component>
 </project>
