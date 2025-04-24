@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 
@@ -40,7 +41,16 @@ public class HomeController {
 
     }
     @PostMapping("/signup")
-    public String signup(@ModelAttribute("user") User user) {
+    public String signup(@ModelAttribute("user") User user, HttpSession session, Model model) {
+        // Check if a user with this email already exists
+        User existingUser = userRepository.findByEmail(user.getEmail());
+        if (existingUser != null) {
+            // Email already exists, return to registration form with error message
+            model.addAttribute("error", "Email already exists");
+            return "inscription";
+        }
+
+        // No duplicate email, proceed with save
         userRepository.save(user);
         return "redirect:/connexion";
     }
