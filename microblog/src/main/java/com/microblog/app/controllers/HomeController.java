@@ -56,17 +56,12 @@ public class HomeController {
     }
 
     @PostMapping("/signup")
-<<<<<<< Updated upstream
-    public String signup(@ModelAttribute("user") User user, HttpSession session) {
-=======
     public String signup(@ModelAttribute("user") User user, HttpSession session, Model model) {
         User existingUser = userRepository.findByEmail(user.getEmail());
         if (existingUser != null) {
             model.addAttribute("error", "Email already exists");
             return "inscription";
         }
-
->>>>>>> Stashed changes
         userRepository.save(user);
         session.setAttribute("user", user);  // Stocke nouvel utilisateur en session
         return "redirect:/connexion";
