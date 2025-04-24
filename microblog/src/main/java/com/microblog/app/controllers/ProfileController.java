@@ -5,7 +5,7 @@ import com.microblog.app.models.User;
 import com.microblog.app.repositories.PostRepository;
 import com.microblog.app.models.Post;
 import com.microblog.app.utils.HashtagUtil;
-import jakarta.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +101,8 @@ public class ProfileController {
 
     @PostMapping("/users/update")
     public String updateProfile(@ModelAttribute("user") User updatedUser,
-                                @RequestParam("avatarFile") MultipartFile avatarFile) throws IOException {
+                                @RequestParam("avatarFile") MultipartFile avatarFile,
+                                HttpServletResponse response) throws IOException {
 
         User user = userRepository.findById(updatedUser.getId())
                 .orElseThrow(() -> new RuntimeException("User not found!"));
@@ -111,26 +112,26 @@ public class ProfileController {
         user.setBio(updatedUser.getBio());
         user.setDob(updatedUser.getDob());
 
-        // Handle avatar upload
         if (!avatarFile.isEmpty()) {
-            String filename = UUID.randomUUID() + "_" + avatarFile.getOriginalFilename();
-            String uploadDir = "src/main/resources/static/pfp"; // Save location in project
-            Path uploadPath = Paths.get(uploadDir);
+            String uploadDir = "uploads/pfp/";
+            Files.createDirectories(Paths.get(uploadDir));
 
-            if (!Files.exists(uploadPath)) {
-                Files.createDirectories(uploadPath);
-            }
+            String filename = UUID.randomUUID() + "_" + avatarFile.getOriginalFilename();
+            Path filePath = Paths.get(uploadDir + filename);
 
             try (InputStream inputStream = avatarFile.getInputStream()) {
-                Path filePath = uploadPath.resolve(filename);
                 Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-                user.setAvatar("/pfp/" + filename); // relative path for <img th:src="@{${user.avatar}}">
+                user.setAvatar("/pfp/" + filename); // no query param needed!
             } catch (IOException e) {
-                throw new IOException("Could not save uploaded file: " + filename, e);
+                throw new IOException("Could not save uploaded file: " + filename);
             }
         }
 
         userRepository.save(user);
+
+        // Optional: flush response to make sure file is committed before redirect
+        //response.flushBuffer();
+
         return "redirect:/profile/" + user.getId();
     }
 }
