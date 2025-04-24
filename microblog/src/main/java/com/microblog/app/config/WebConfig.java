@@ -12,5 +12,9 @@ public class WebConfig implements WebMvcConfigurer {
         // Gets profile pictures from the folder "uploads/pfp/"
         registry.addResourceHandler("/pfp/**")
                 .addResourceLocations("file:uploads/pfp/");
+
+        // Gets post image from the folder "uploads/post_image/"
+        registry.addResourceHandler("/post_image/**")
+                .addResourceLocations("file:uploads/post_image/");
     }
 }

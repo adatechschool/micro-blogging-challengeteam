@@ -47,7 +47,7 @@ public class HashtagController {
         model.addAttribute("tag", tag);
         model.addAttribute("currentPage", page);
 
-        return (page == 0) ? "hashtag-posts" : "fragments/post-list :: postList";
+        return (page == 0) ? "hashtag-posts" : "fragments/post-list :: postList(posts=${posts})";
     }
 
 }

@@ -66,11 +66,11 @@ public class ProfileController {
                              @RequestParam("imageFile") MultipartFile imageFile) throws IOException {
         if (!imageFile.isEmpty()) {
             String filename = UUID.randomUUID() + "_" + imageFile.getOriginalFilename();
-            String uploadDir = "src/main/resources/static/uploads/";
+            String uploadDir = "uploads/post_image/";
             Files.createDirectories(Paths.get(uploadDir));
             Path filePath = Paths.get(uploadDir + filename);
             Files.copy(imageFile.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-            post.setImage("/uploads/" + filename);
+            post.setImage("/post_image/" + filename);
         }
         post.setCreatedAt(new Timestamp(System.currentTimeMillis()));
         postRepository.save(post);
