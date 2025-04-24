@@ -13,7 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 
@@ -49,32 +48,36 @@ public class HomeController {
         model.addAttribute("user", users);
         return "users";
     }
+
     @GetMapping("/signup")
     public String signup(Model model) {
         model.addAttribute("user", new User());
         return "inscription";
-
     }
+
     @PostMapping("/signup")
+<<<<<<< Updated upstream
+    public String signup(@ModelAttribute("user") User user, HttpSession session) {
+=======
     public String signup(@ModelAttribute("user") User user, HttpSession session, Model model) {
-        // Check if a user with this email already exists
         User existingUser = userRepository.findByEmail(user.getEmail());
         if (existingUser != null) {
-            // Email already exists, return to registration form with error message
             model.addAttribute("error", "Email already exists");
             return "inscription";
         }
 
-        // No duplicate email, proceed with save
+>>>>>>> Stashed changes
         userRepository.save(user);
         session.setAttribute("user", user);  // Stocke nouvel utilisateur en session
         return "redirect:/connexion";
     }
+
     @GetMapping("/connexion")
     public String showLoginForm(Model model){
         model.addAttribute("user", new User());
         return "connexion";
     }
+
     @PostMapping("/connexion")
     public String processLogin(@ModelAttribute("user") User user, Model model,HttpSession session) {
         User existingUser = userRepository.findByEmail(user.getEmail());
@@ -94,6 +97,5 @@ public class HomeController {
         session.invalidate();
         return "redirect:/";
     }
-
 
 }
