@@ -15,6 +15,7 @@
     </style>
 </head>
 <body class="container py-5">
+<div th:replace="fragments/navbar :: navbar"></div>
 
 <!-- Back to Profile -->
 <a th:href="@{/profile/{id}(id=${posts[0]?.user.id})}" class="btn btn-outline-secondary back-btn">
