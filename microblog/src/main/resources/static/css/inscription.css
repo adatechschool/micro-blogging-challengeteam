@@ -1,0 +1,133 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #f2f5fc;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 50px auto;
+    display: flex;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+}
+
+.form-section, .visual-section {
+    flex: 1;
+    padding: 40px;
+    background: white;
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-section h2 {
+    font-size: 32px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+
+.input-group {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px 20px;
+    border: none;
+    border-radius: 25px;
+    background: #f2f4f8;
+    font-size: 15px;
+}
+
+.input-group input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+}
+
+.input-group.checkbox {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
+
+.input-group.checkbox a {
+    color: #4e00ff;
+    text-decoration: none;
+    margin-left: 4px;
+}
+
+.btn {
+    width: 100%;
+    background: linear-gradient(to right, #6c00ff, #a300d9);
+    color: white;
+    border: none;
+    padding: 15px 20px;
+    border-radius: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    opacity: 0.9;
+}
+
+.bottom-text {
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+.bottom-text a {
+    color: #4e00ff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.visual-section {
+    background: linear-gradient(135deg, #4e00ff, #a300d9);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.visual-section::before {
+    content: '';
+    position: absolute;
+    top: -10%;
+    left: -10%;
+    right: -10%;
+    bottom: -10%;
+    background: white;
+    border-radius: 50%;
+    z-index: 0;
+    opacity: 0.2;
+}
+
+.visual-section h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    z-index: 1;
+}
+
+.visual-section h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    z-index: 1;
+}
+
+.visual-section p {
+    font-size: 16px;
+    max-width: 300px;
+    z-index: 1;
+}
